@@ -1,0 +1,297 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="xlua">
+      <UniqueIdentifier>{744ac5d0-02df-4eb2-a379-cf2e1fdc6262}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lua">
+      <UniqueIdentifier>{a3298023-a20d-4569-a211-62ae56e92898}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="extend">
+      <UniqueIdentifier>{0ac02e15-4b1d-4427-9217-5c39249f3e29}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\xlualib\lwinapi.cpp">
+      <Filter>xlua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\xlualib\lxhttp.cpp">
+      <Filter>xlua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\xlualib\lxlog.cpp">
+      <Filter>xlua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\xlualib\lzlib.cpp">
+      <Filter>xlua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\xlualib\xlualib.cpp">
+      <Filter>xlua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\xlualib\lalgorithm.cpp">
+      <Filter>xlua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\xlualib\lhex_str.cpp">
+      <Filter>xlua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\xlualib\lmkmem.cpp">
+      <Filter>xlua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\xlualib\lopenssl.cpp">
+      <Filter>xlua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\xlualib\ls_ws.cpp">
+      <Filter>xlua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\xlualib\lserialcomm.cpp">
+      <Filter>xlua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\xlualib\lsock.cpp">
+      <Filter>xlua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\xlualib\lutf8.cpp">
+      <Filter>xlua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\xlualib\ldes.cpp">
+      <Filter>xlua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\xlualib\laes.cpp">
+      <Filter>xlua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\4210.cpp">
+      <Filter>extend</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lapi.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lauxlib.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lbaselib.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lbitlib.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lcode.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lcorolib.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lctype.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ldblib.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ldebug.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ldo.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ldump.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lfunc.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lgc.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\linit.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\liolib.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\llex.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lmathlib.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lmem.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\loadlib.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lobject.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lopcodes.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\loslib.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lparser.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lstate.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lstring.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lstrlib.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ltable.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ltablib.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ltm.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lundump.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lvm.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lzio.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\xlualib\lalgorithm.h">
+      <Filter>xlua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\xlualib\lhex_str.h">
+      <Filter>xlua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\xlualib\lmkmem.h">
+      <Filter>xlua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\xlualib\lopenssl.h">
+      <Filter>xlua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\xlualib\ls_ws.h">
+      <Filter>xlua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\xlualib\lserialcomm.h">
+      <Filter>xlua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\xlualib\lsock.h">
+      <Filter>xlua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\xlualib\lutf8.h">
+      <Filter>xlua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\xlualib\lwinapi.h">
+      <Filter>xlua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\xlualib\lxhttp.h">
+      <Filter>xlua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\xlualib\lxlog.h">
+      <Filter>xlua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\xlualib\lzlib.h">
+      <Filter>xlua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\xlualib\xlualib.h">
+      <Filter>xlua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\xlualib\ldes.h">
+      <Filter>xlua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\xlualib\laes.h">
+      <Filter>xlua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lapi.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lauxlib.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lcode.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lctype.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ldebug.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ldo.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lfunc.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lgc.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\llex.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\llimits.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lmem.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lobject.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lopcodes.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lparser.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lstate.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lstring.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ltable.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ltm.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lua.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lua.hpp">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\luaconf.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lualib.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lundump.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lvm.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lzio.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>extend</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="luadll.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\xlua.lua" />
+  </ItemGroup>
+</Project>
