@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\xlualib\laes.cpp" />
     <ClCompile Include="..\..\xlualib\lalgorithm.cpp" />
+    <ClCompile Include="..\..\xlualib\lblowfish.cpp" />
     <ClCompile Include="..\..\xlualib\ldes.cpp" />
     <ClCompile Include="..\..\xlualib\lhex_str.cpp" />
     <ClCompile Include="..\..\xlualib\lmkmem.cpp" />
@@ -63,6 +64,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\xlualib\laes.h" />
     <ClInclude Include="..\..\xlualib\lalgorithm.h" />
+    <ClInclude Include="..\..\xlualib\lblowfish.h" />
     <ClInclude Include="..\..\xlualib\ldes.h" />
     <ClInclude Include="..\..\xlualib\lhex_str.h" />
     <ClInclude Include="..\..\xlualib\lmkmem.h" />

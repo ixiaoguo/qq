@@ -160,6 +160,9 @@
     <ClCompile Include="..\src\lzio.c">
       <Filter>lua</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\xlualib\lblowfish.cpp">
+      <Filter>xlua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\xlualib\lalgorithm.h">
@@ -284,6 +287,9 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>extend</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\xlualib\lblowfish.h">
+      <Filter>xlua</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
