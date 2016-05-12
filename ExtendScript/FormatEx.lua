@@ -207,13 +207,13 @@ end
 function FormatEx.wxline_string( tvb, off, size, func, root )
   return get_line_string( 2, true, tvb, off, size, func, root );
 end
-function FormatEx.wline_string( tvb, off )
+function FormatEx.wline_string( tvb, off, size, func, root )
   return get_line_string( 2, false, tvb, off, size, func, root );
 end
 function FormatEx.dxline_string( tvb, off, size, func, root )
   return get_line_string( 4, true, tvb, off, size, func, root );
 end
-function FormatEx.dline_string( tvb, off )
+function FormatEx.dline_string( tvb, off, size, func, root )
   return get_line_string( 4, false, tvb, off, size, func, root );
 end
 
@@ -241,12 +241,12 @@ end
 function FormatEx.wxline_bytes( tvb, off, size, func, root )
   return get_line_bytes( 2, true, tvb, off, size, func, root );
 end
-function FormatEx.wline_bytes( tvb, off )
+function FormatEx.wline_bytes( tvb, off, size, func, root )
   return get_line_bytes( 2, false, tvb, off, size, func, root );
 end
 function FormatEx.dxline_bytes( tvb, off, size, func, root )
   return get_line_bytes( 4, true, tvb, off, size, func, root );
 end
-function FormatEx.dline_bytes( tvb, off )
+function FormatEx.dline_bytes( tvb, off, size, func, root )
   return get_line_bytes( 4, false, tvb, off, size, func, root );
 end
