@@ -45,7 +45,7 @@ function TXSSO2_SetPsSaltKey( qq, ps )
   if type( qq ) == "string" then
     qq = tonumber( qq );
   end
-  ps = ps or "Qq185131606";     --默认密码
+  ps = ps or "";     --默认密码
   local pssaltmd5 = netline:new();
   pssaltmd5:sa( ps:md5() );
   pssaltmd5:sd( 0 );
