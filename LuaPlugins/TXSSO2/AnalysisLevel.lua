@@ -12,6 +12,9 @@
   string      txsso2_analysis_level = "detail";
     --默认解析等级首先接受全局解析等级控制main_analysis_level
     --允许实时改变TXSSO2的解析等级以单独控制
+    --解析等级"simple"时，只会解析出CsCmdNo以及标识send recv
+    --解析等级"more"时，只做解密操作，不解析字段
+    --解析等级"complex"或"detail"时，将细化解析
 ]=======]
 local default_analysis_level = "detail";
 

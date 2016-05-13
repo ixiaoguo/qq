@@ -18,21 +18,24 @@ local fieldsex, fields = unpack( fields );
 
 dissectors[0x3649].tlv[0x0018] = function( buf, pkg, root, t, off, size )
   local oo = off;
-  off = TreeAddEx( fieldsex, t, buf, off,
-    ">wTlvVer W",
-    ">dwSSOVersion D",
-    ">dwServiceId D",
-    ">dwClientVer D",
-    ">dwUin D"
-    );
-  local wRedirectCount = buf( off, 2 ):uint();
-  off = TreeAddEx( fieldsex, t, buf, off, ">wRedirectCount W" );
-  for k = 1, wRedirectCount do
-    off = TreeAddEx( fieldsex, t, buf, off, ">dwRedirectIP D" );
+  local ver = buf( off, 2 ):uint();
+  if ver == 0x0001 then
+    off = TreeAddEx( fieldsex, t, buf, off,
+      ">wTlvVer W",
+      ">dwSSOVersion D",
+      ">dwServiceId D",
+      ">dwClientVer D",
+      ">dwUin D"
+      );
+    local wRedirectCount = buf( off, 2 ):uint();
+    off = TreeAddEx( fieldsex, t, buf, off, ">wRedirectCount W" );
+    for k = 1, wRedirectCount do
+      off = TreeAddEx( fieldsex, t, buf, off, ">dwRedirectIP D" );
+    end
+    off = TreeAddEx( fieldsex, t, buf, off, ">*NullBuf wxline_bytes" );
   end
-  off = TreeAddEx( fieldsex, t, buf, off, ">*NullBuf wxline_bytes" );
   if off - oo >= size then
     return;
   end
-  TreeAddEx( fieldsex, t, buf, off, ">unsloved", size - ( off - oo ) );
+  TreeAddEx( fieldsex, t, buf, off, ">unsolved", size - ( off - oo ) );
 end

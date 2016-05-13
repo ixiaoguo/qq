@@ -8,6 +8,8 @@
 
 local CsCmdNo = require "TXSSO2/CsCmdNo";
 local PubNo = require "TXSSO2/PubNo";
+local RetCode = require "TXSSO2/RetCode";
+
 local fields =
   {
     { "bytes",      "unsolved",       "未解决"                   },
@@ -19,6 +21,7 @@ local fields =
     { "uint16",     "wCsCmdNo",       "指令",           base.HEX, CsCmdNo },
     { "uint16",     "wCsIOSeq",       "包序",           base.HEX },
     { "uint32",     "dwUin",          "QQ号",           base.DEC },
+    { "bytes",      "bufCsPrefix",                               },
     { "uint32",     "dwClientType",   "客户端类型",     base.HEX },
     { "uint32",     "dwPubNo",        "发行版本号",     base.HEX, PubNo },
     { "uint16",     "wTlvVer",        "TLV版本号",      base.HEX },
@@ -27,10 +30,17 @@ local fields =
     { "uint32",     "dwClientVer",    "客户端版本",     base.HEX },
     { "uint16",     "wRedirectCount", "重定向次数",     base.DEC },
     { "uint8",      "cRedirectCount", "重定向次数",     base.DEC },
-    { "ipv4",       "dwRedirectIP",   "重定向IP"                 },
-    { "ipv4",       "dwServerIP",     "服务器IP"                 },
+    { "ipv4",       "dwRedirectIP",   "重定向地址"               },
+    { "ipv4",       "dwServerIP",     "服务器地址"               },
     { "uint8",      "cPingType",      "PingType",       base.HEX },
-    { "bytes",      "bufCsPrefix",                               },
+    { "bytes",      "bufDHPublicKey", "ECDHPublicKey"            },
+    { "uint8",      "cResult",        "响应码",         base.HEX, RetCode },
+    { "absolute_time", "dwServerTime","服务器时间",     base.LOCAL },
+    { "ipv4",       "dwClientWanIP",  "客户端外网地址"             },
+    { "uint16",     "wClientWanPort", "客户端外网端口", base.DEC_HEX },
+    { "uint32",     "dwIDC",          "IDC",            base.HEX },
+    { "uint32",     "dwISP",          "ISP",            base.HEX },
+    { "uint16",     "wRedirectPort",  "重定向端口",     base.DEC_HEX },
   };
 
 local fieldsex, fields = ProtoFieldEx( "txsso2.", fields );

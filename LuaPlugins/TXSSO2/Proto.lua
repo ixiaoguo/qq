@@ -91,7 +91,13 @@ function proto.dissector( buf, pkg, root )
   else
     root:add( "TXSSO2 Dissectors无对应SSO版本" );
   end
-  if not func or not pcall( func, buf, pkg, root, t ) then
+  if func then
+    local b, err = pcall( func, buf, pkg, root, t );
+    if not b then
+      root:add( "解析proto失败 : " .. err );
+      TreeAddEx( fieldsex, t, buf, 1, ">unsolved", buf:len() - 2 );
+    end
+  else
     TreeAddEx( fieldsex, t, buf, 1, ">unsolved", buf:len() - 2 );
   end
 

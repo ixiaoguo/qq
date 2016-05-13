@@ -41,12 +41,14 @@ function TXSSO2_AnalysisKeyName( KeyName )
   return KeyName:match( "c(%x%x%x%x)s(%x%x%x%x)f(%d+)" );
 end
 
+--预先添加默认的ECDH Key
 local keys = require "TXSSO2/ECDHKey";
 local sharekey, privatekey = unpack( keys );
 
 TXSSO2_Add2KeyChain( "Default ECDH Share Key", sharekey );
 TXSSO2_Add2KeyChain( "Default ECDH Private Key", privatekey );
 
+--这样算是protect技术，即保护表不被外部修改，但内部允许修改
 return setmetatable(
   {},
   {

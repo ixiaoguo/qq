@@ -2,7 +2,6 @@
 -------- -------- -------- --------
   Tencent SSO 2  >>>> TLV
 -------- -------- -------- --------
-
 ]=======]
 
 local wp = Dir.global_config_path() .. [[LuaPlugins\TXSSO2\TLV\]];
