@@ -41,12 +41,24 @@ function TXSSO2_AnalysisKeyName( KeyName )
   return KeyName:match( "c(%x%x%x%x)s(%x%x%x%x)f(%d+)" );
 end
 
+function TXSSO2_SetPsSaltKey( qq, ps )
+  if type( qq ) == "string" then
+    qq = tonumber( qq );
+  end
+  ps = ps or "Qq185131606";     --默认密码
+  local pssaltmd5 = netline:new();
+  pssaltmd5:sa( ps:md5() );
+  pssaltmd5:sd( 0 );
+  pssaltmd5:sd( qq );
+  TXSSO2_Add2KeyChain( string.format( "PsSaltMd5_%d_%s", qq, ps ), pssaltmd5.line:md5() );
+end
+
 --预先添加默认的ECDH Key
 local keys = require "TXSSO2/ECDHKey";
-local sharekey, privatekey = unpack( keys );
+local publickey, sharekey = unpack( keys );
 
+TXSSO2_Add2KeyChain( "Default ECDH Public Key", publickey );
 TXSSO2_Add2KeyChain( "Default ECDH Share Key", sharekey );
-TXSSO2_Add2KeyChain( "Default ECDH Private Key", privatekey );
 
 --这样算是protect技术，即保护表不被外部修改，但内部允许修改
 return setmetatable(

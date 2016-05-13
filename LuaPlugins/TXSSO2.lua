@@ -10,3 +10,4 @@ require "TXSSO2/Proto";
 require "TXSSO2/Dissectors";
 require "TXSSO2/Packets";
 require "TXSSO2/TLV";
+require "TXSSO2/Expand";

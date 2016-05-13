@@ -69,7 +69,7 @@ function proto.dissector( buf, pkg, root )
   end
 
   if lvl == alvlD then
-    TreeAddEx( fieldsex, t, buf, 0,
+    dissectors.add( t, buf, 0,
       ">cPreFix B"
       );
   end
@@ -80,11 +80,11 @@ function proto.dissector( buf, pkg, root )
   if func then
     func = func[ cmd ];                   --对应CsCmdNo
     if func then
-      local dis = func.send;
       if pkg.src_port == proto_port then
-        dis = func.recv;
+        func = func.recv;
+      else
+        func = func.send
       end
-      func = dis;
     else
       root:add( "TXSSO2 Dissectors无对应CsCmdNo" );
     end
@@ -95,14 +95,14 @@ function proto.dissector( buf, pkg, root )
     local b, err = pcall( func, buf, pkg, root, t );
     if not b then
       root:add( "解析proto失败 : " .. err );
-      TreeAddEx( fieldsex, t, buf, 1, ">unsolved", buf:len() - 2 );
+      dissectors.add( t, buf, 1, ">unsolved", buf:len() - 2 );
     end
   else
-    TreeAddEx( fieldsex, t, buf, 1, ">unsolved", buf:len() - 2 );
+    dissectors.add( t, buf, 1, ">unsolved", buf:len() - 2 );
   end
 
   if lvl == alvlD then
-    TreeAddEx( fieldsex, t, buf, buf:len() - 1,
+    dissectors.add( t, buf, buf:len() - 1,
       ">cSufFix B"
       );
   end

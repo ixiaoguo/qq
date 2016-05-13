@@ -41,6 +41,13 @@ local fields =
     { "uint32",     "dwIDC",          "IDC",            base.HEX },
     { "uint32",     "dwISP",          "ISP",            base.HEX },
     { "uint16",     "wRedirectPort",  "重定向端口",     base.DEC_HEX },
+    { "string",     "ComputerName",   "计算机名称"               },
+    { "bytes",      "bufComputerID",  "机器码"                   },
+    { "bool",       "bRememberPwdLogin","记住密码"               },
+    { "bytes",      "bufPsMD5",       "密码MD5"                  },
+    { "bytes",      "bufTGTGTKey",    "TGTGTKey"                 },
+    { "bytes",      "bufSID",         "SID"                      },
+
   };
 
 local fieldsex, fields = ProtoFieldEx( "txsso2.", fields );

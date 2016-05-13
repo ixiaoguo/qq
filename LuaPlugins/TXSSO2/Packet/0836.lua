@@ -1,28 +1,31 @@
 ﻿--[=======[
 -------- -------- -------- --------
-  Tencent SSO 2  >>>> Dissectors >>>> 0825
+  Tencent SSO 2  >>>> Dissectors >>>> 0836
 -------- -------- -------- --------
 
-Ping
+GetTGTGT
 ]=======]
 
 local dissectors = require "TXSSO2/Dissectors";
 
 dissectors[0x3649] = dissectors[0x3649] or {};
 
-dissectors[0x3649][0x0825] = dissectors[0x3649][0x0825] or {};
+dissectors[0x3649][0x0836] = dissectors[0x3649][0x0836] or {};
 
 local proto = require "TXSSO2/Proto";
 
+local keychain = require "TXSSO2/KeyChain";
+
 local aly_lvl = require "TXSSO2/AnalysisLevel";
 
-dissectors[0x3649][0x0825].send = function( buf, pkg, root, t )
+dissectors[0x3649][0x0836].send = function( buf, pkg, root, t )
   local ver = buf( 1, 2 ):uint();
   local cmd = buf( 1 + 1 + 1, 2 ):uint();
   local seq = buf( 1 + 1 + 1 + 2, 2 ):uint();
+  local qq = buf( 1 + 1 + 1 + 2 + 2, 4 ):uint();
 
-  local key = buf:raw( 0x1A, 0x10 );
-  TXSSO2_Add2KeyChain( TXSSO2_MakeKeyName( cmd, seq, pkg.number ), key );
+  TXSSO2_SetPsSaltKey( qq );
+
 
   local lvl = aly_lvl();
 
@@ -40,16 +43,35 @@ dissectors[0x3649][0x0825].send = function( buf, pkg, root, t )
       ">dwClientType D",
       ">dwPubNo D",
       ">xxoo_d",
-      ">bufCsPrefix", 0x10
+      ">*SubVer W",
+      ">*ECDH版本 W"
       );
   end
 
-  local rest = buf:len() - 1 - 0x2A;
-  local data = buf:raw( 0x2A, rest );
+  local off = 0x1E;
+  local bufDHPublicKey_size = buf( off, 2 ):uint();
+
+  --local bufDHPublicKey = buf:raw( off + 2, bufDHPublicKey_size );
+  --TXSSO2_Add2KeyChain( string.format( "s%04Xf%d_DHPublicKey", seq, pkg.number ), bufDHPublicKey );
+
+  local key = buf:raw( off + 2 + bufDHPublicKey_size + 4, 0x10 );
+  TXSSO2_Add2KeyChain( TXSSO2_MakeKeyName( cmd, seq, pkg.number ), key );
+  
+  if lvl >= alvlC then
+    dissectors.add( t, buf, off,
+      ">bufDHPublicKey", FormatEx.wxline_string,
+      ">*dwCsCmdCryptKeySize D",
+      ">bufCsPrefix", 0x10
+      );
+  end
+  off = off + 2 + bufDHPublicKey_size + 4 + 0x10;
+
+  local rest = buf:len() - 1 - off;
+  local data = buf:raw( off, rest );
   
   local refkeyname,refkey, ds = dissectors.TeanDecrypt( data );
   if ds == nil or #ds == 0 then
-    t:add( proto, buf( 0x2A, rest ), string.format(
+    t:add( proto, buf( off, rest ), string.format(
       "GeneralCodec_Request [%04X] 解密失败！！！！",
       rest )
       );
@@ -72,12 +94,12 @@ dissectors[0x3649][0x0825].send = function( buf, pkg, root, t )
   else
     info = info .. "[" .. refkeyname .. "]:" .. refkey:sub( 1, 0x10 ):hex2str( true );
   end
-  local tt = t:add( proto, buf( 0x2A, rest ), info );
-
+  local tt = t:add( proto, buf( off, rest ), info );
+  
   dissectors.dis_tlv( data, pkg, root, tt, 0, data:len() );
 end
 
-dissectors[0x3649][0x0825].recv = function( buf, pkg, root, t )
+dissectors[0x3649][0x0836].recv = function( buf, pkg, root, t )
   local ver = buf( 1, 2 ):uint();
   local cmd = buf( 1 + 1 + 1, 2 ):uint();
   local seq = buf( 1 + 1 + 1 + 2, 2 ):uint();
@@ -101,6 +123,7 @@ dissectors[0x3649][0x0825].recv = function( buf, pkg, root, t )
   local rest = buf:len() - 1 - 0xE;
   local data = buf:raw( 0xE, rest );
   
+
   local refkeyname,refkey, ds = dissectors.TeanDecrypt( data );
   if ds == nil or #ds == 0 then
     t:add( proto, buf( 0xE, rest ), string.format(
@@ -116,20 +139,5 @@ dissectors[0x3649][0x0825].recv = function( buf, pkg, root, t )
     rest,
     data:len()
     );
-  local c, s, n = TXSSO2_AnalysisKeyName( refkeyname );
-  if c then
-    if n == tostring( pkg.number ) then
-      info = info .. "    by frame self ↑↑↑";
-    else
-      info = info .. ":" .. refkey:sub( 1, 0x10 ):hex2str( true ) .. "       form FrameNum:" .. n;
-    end
-  else
-    info = info .. "[" .. refkeyname .. "]:" .. refkey:sub( 1, 0x10 ):hex2str( true );
-  end
-  local tt = t:add( proto, buf( 0xE, rest ), info );
-  
-  local off = 0;
-  off = dissectors.add( tt, data, off, ">cResult" );
-
-  dissectors.dis_tlv( data, pkg, root, tt, off, data:len() - off );
+  do return; end
 end

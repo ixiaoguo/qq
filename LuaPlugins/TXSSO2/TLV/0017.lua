@@ -8,19 +8,14 @@ SSO2::TLV_ClientInfo_0x17
 
 local dissectors = require "TXSSO2/Dissectors";
 
-dissectors[0x3649] = dissectors[0x3649] or {};
+dissectors.tlv = dissectors.tlv or {};
 
-dissectors[0x3649].tlv = dissectors[0x3649].tlv or {};
 
-local proto = require "TXSSO2/Proto";
-local fields = require "TXSSO2/Fields";
-local fieldsex, fields = unpack( fields );
-
-dissectors[0x3649].tlv[0x0017] = function( buf, pkg, root, t, off, size )
+dissectors.tlv[0x0017] = function( buf, pkg, root, t, off, size )
   local oo = off;
   local ver = buf( off, 2 ):uint();
   if ver == 0x0001 then
-    off = TreeAddEx( fieldsex, t, buf, off,
+    off = dissectors.add( t, buf, off,
       ">wTlvVer W",
       ">dwServerTime D",
       ">dwClientWanIP D",
@@ -28,8 +23,5 @@ dissectors[0x3649].tlv[0x0017] = function( buf, pkg, root, t, off, size )
       ">*BufUnknow wxline_bytes"
       );
   end
-  if off - oo >= size then
-    return;
-  end
-  TreeAddEx( fieldsex, t, buf, off, ">unsolved", size - ( off - oo ) );
+  dissectors.addex( t, buf, off, size - ( off - oo ) );
 end
