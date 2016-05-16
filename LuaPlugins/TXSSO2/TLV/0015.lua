@@ -21,7 +21,7 @@ dissectors.tlv[0x0015] = function( buf, pkg, root, t, off, size )
       off = dissectors.add( t, buf, off,
         ">*机器码序号 B",
         ">*crc32 D",
-        ">bufComputerID", FormatEx.wxline_string
+        ">bufComputerID", FormatEx.wxline_bytes
         );
     end
   end

@@ -20,7 +20,7 @@ dissectors.tlv[0x0006] = function( buf, pkg, root, t, off, size )
     t:add( buf( off, size ), "TGTGT解密失败！！！！" );
     return;
   end
-  
+
   local info = string.format(
     "TGTGT [%04X] >> [%04X]       With Key",
     size,
@@ -50,7 +50,7 @@ dissectors.tlv[0x0006] = function( buf, pkg, root, t, off, size )
       ">dwClientWanIP D",
       ">dwISP D",
       ">dwIDC D",
-      ">bufComputerID", FormatEx.wxline_string
+      ">bufComputerID", FormatEx.wxline_bytes
       );
     local key = buf:raw( off, 0x10 );
     TXSSO2_Add2KeyChain( string.format( "f%d_TGTGTKey", pkg.number ), key );

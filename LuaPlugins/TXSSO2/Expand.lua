@@ -25,7 +25,7 @@ end
 
 function dissectors.addex( t, buf, off, size )
   if size <= 0 then
-    return;
+    return off;
   end
   return TreeAddEx( fieldsex, t, buf, off, ">unsolved", size );
 end

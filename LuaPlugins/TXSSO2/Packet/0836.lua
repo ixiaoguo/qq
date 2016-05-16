@@ -59,7 +59,7 @@ dissectors[0x3649][0x0836].send = function( buf, pkg, root, t )
   
   if lvl >= alvlC then
     dissectors.add( t, buf, off,
-      ">bufDHPublicKey", FormatEx.wxline_string,
+      ">bufDHPublicKey", FormatEx.wxline_bytes,
       ">*dwCsCmdCryptKeySize D",
       ">bufCsPrefix", 0x10
       );
@@ -132,12 +132,52 @@ dissectors[0x3649][0x0836].recv = function( buf, pkg, root, t )
       );
     return;
   end
-  data = ByteArray.new( ds, true ):tvb( "Decode" );
+
+  data = ByteArray.new( ds, true ):tvb( "Decode1" );
 
   local info = string.format(
     "GeneralCodec_Response [%04X] >> [%04X]       With Key",
     rest,
     data:len()
     );
-  do return; end
+  local c, s, n = TXSSO2_AnalysisKeyName( refkeyname );
+  if c then
+    if n == tostring( pkg.number ) then
+      info = info .. "    by frame self ↑↑↑";
+    else
+      info = info .. ":" .. refkey:sub( 1, 0x10 ):hex2str( true ) .. "       form FrameNum:" .. n;
+    end
+  else
+    info = info .. "[" .. refkeyname .. "]:" .. refkey:sub( 1, 0x10 ):hex2str( true );
+  end
+  local tt = t:add( proto, buf( 0xE, rest ), info );
+  
+  --做二次解密尝试，注意，只是尝试，因为要考虑密码错误返回的情况，此时，并不需要二次解密
+  local refkeyname,refkey, ds = dissectors.TeanDecrypt( ds );
+  if ds and #ds > 0 then
+    local ds = ByteArray.new( ds, true ):tvb( "Decode2" );
+    local info = string.format(
+      "GeneralCodec_Response [%04X] >> [%04X]       With Key",
+      data:len(),
+      ds:len()
+      );
+    local c, s, n = TXSSO2_AnalysisKeyName( refkeyname );
+    if c then
+      if n == tostring( pkg.number ) then
+        info = info .. "    by frame self ↑↑↑";
+      else
+        info = info .. ":" .. refkey:sub( 1, 0x10 ):hex2str( true ) .. "       form FrameNum:" .. n;
+      end
+    else
+      info = info .. "[" .. refkeyname .. "]:" .. refkey:sub( 1, 0x10 ):hex2str( true );
+    end
+    tt = tt:add( proto, data( ), info );
+    data = ds;
+  end
+
+  
+  local off = 0;
+  off = dissectors.add( tt, data, off, ">cResult" );
+
+  dissectors.dis_tlv( data, pkg, root, tt, off, data:len() - off );
 end
