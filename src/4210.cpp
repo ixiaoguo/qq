@@ -57,7 +57,12 @@ extern "C" void load_lua_plugins(lua_State* ls)
     {
     const string ff(path + fd.cFileName);
     lua_settop(ls, oldtop);
-    luaL_dofile(ls, ff.c_str());
+
+    if(LUA_OK != luaL_loadfile(ls, ff.c_str()) || LUA_OK != lua_pcall(ls, 0, LUA_MULTRET, 0))
+      {
+      lua_error(ls);
+      }
+
     lua_settop(ls, oldtop);
     }while(FindNextFileA(hf, &fd));
   FindClose(hf);

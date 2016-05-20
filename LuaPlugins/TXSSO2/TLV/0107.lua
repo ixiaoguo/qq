@@ -19,7 +19,9 @@ dissectors.tlv[0x0107] = function( buf, pkg, root, t, off, size )
   if ver == 0x0001 then
     local oo = off;
     local bufTickStatus, size = FormatEx.wxline_string( buf, off );
-    local tt = t:add( proto, buf( off, size ), "bufTickStatus  凭据状态" );
+    local tt = t:add( proto, buf( off, size ),
+      string.format( "bufTickStatus  凭据状态   (%04X)", #bufTickStatus )
+      );
     off = dissectors.add( tt, buf, off + 2,
       ">dwTGTServiceID D",
       ">dwTGTPriority D",
@@ -34,26 +36,28 @@ dissectors.tlv[0x0107] = function( buf, pkg, root, t, off, size )
     TXSSO2_Add2KeyChain( "f" .. pkg.number .. "_TGT_GTKey", key );
     off = dissectors.add( t, buf, off,
       ">bufTGT_GTKey", 0x10,
-      ">bufTGT", FormatEx.wxline_bytes
+      ">bufTGT", dissectors.format_qqbuf
       );
       
     local key = buf:raw( off, 0x10 );
     TXSSO2_Add2KeyChain( "f" .. pkg.number .. "_GTKey_ST", key );
     off = dissectors.add( t, buf, off,
       ">buf16bytesGTKey_ST", 0x10,
-      ">bufServiceTicket", FormatEx.wxline_bytes
+      ">bufServiceTicket", dissectors.format_qqbuf
       );
 
     local oo = off;
     local bufSTHttp, size = FormatEx.wxline_string( buf, off );
-    local tt = t:add( proto, buf( off, size ), "bufSTHttp  HTTP凭据" );
+    local tt = t:add( proto, buf( off, size ),
+      string.format( "bufSTHttp  HTTP凭据   (%04X)", #bufSTHttp )
+      );
     
     local key = buf:raw( off + 2 + 1, 0x10 );
     TXSSO2_Add2KeyChain( "f" .. pkg.number .. "_GTKey_STHttp", key );
     off = dissectors.add( tt, buf, off + 2,
       ">bAllowPtlogin B",
       ">buf16bytesGTKey_STHttp", 0x10,
-      ">bufServiceTicketHttp", FormatEx.wxline_bytes
+      ">bufServiceTicketHttp", dissectors.format_qqbuf
       );
     off = dissectors.addex( tt, buf, off, size - ( off - oo ) );
 

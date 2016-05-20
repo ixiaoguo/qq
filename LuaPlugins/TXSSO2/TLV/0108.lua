@@ -19,11 +19,15 @@ dissectors.tlv[0x0108] = function( buf, pkg, root, t, off, size )
   if ver == 0x0001 then
     local oo = off;
     local ss, size = FormatEx.wxline_string( buf, off );
-    local tt = t:add( proto, buf( off, size ), "bufAccountBasicInfo    帐户基本信息" );
+    local tt = t:add( proto, buf( off, size ),
+      string.format( "bufAccountBasicInfo    帐户基本信息   (%04X)", #ss )
+      );
     do
       local oo = off;
       local sss, size = FormatEx.wxline_string( buf, off + 2 );
-      local ttt = tt:add( proto, buf( off + 2, size ), "bufInAccountValue" );
+      local ttt = tt:add( proto, buf( off + 2, size ),
+        string.format( "bufInAccountValue   (%04X)", #sss )
+        );
       
       off = dissectors.add( ttt, buf, off + 2 + 2,
         ">wSSO_Account_wFaceIndex W",
@@ -35,7 +39,7 @@ dissectors.tlv[0x0108] = function( buf, pkg, root, t, off, size )
       off = dissectors.addex( tt, buf, off, size - ( off - oo ) );
     end
     off = dissectors.add( tt, buf, off,
-      ">bufSTOther", FormatEx.wxline_bytes
+      ">bufSTOther", dissectors.format_qqbuf
       );
     off = dissectors.addex( tt, buf, off, size - ( off - oo ) );
   end

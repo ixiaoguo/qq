@@ -29,8 +29,8 @@ dissectors.tlv[0x0313] = function( buf, pkg, root, t, off, size )
       off = dissectors.add( t, buf, off, ">*GUID索引号 B" );
       local name = GuidName[ n ] or ( "Unknow" .. n );
       off = dissectors.add( t, buf, off,
-        ">*" .. name .. " wxline_bytes",
-        ">*建立耗时 D"
+        ">*" .. name .. " string", dissectors.format_qqbuf,
+        ">*建立耗时(ms) D"
         );
     end
   end

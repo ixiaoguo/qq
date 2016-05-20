@@ -16,7 +16,7 @@ dissectors.tlv[0x0110] = function( buf, pkg, root, t, off, size )
   off = dissectors.add( t, buf, off, ">wTlvVer W" );
   if ver == 0x0001 then
     off = dissectors.add( t, buf, off,
-      ">bufSigPic", FormatEx.wxline_bytes
+      ">bufSigPic", dissectors.format_qqbuf
       );
   end
   dissectors.addex( t, buf, off, size - ( off - oo ) );

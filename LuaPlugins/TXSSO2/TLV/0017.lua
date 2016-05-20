@@ -20,7 +20,7 @@ dissectors.tlv[0x0017] = function( buf, pkg, root, t, off, size )
       ">dwServerTime D",
       ">dwClientWanIP D",
       ">wClientWanPort W",
-      ">*BufUnknow wxline_bytes"
+      ">UnknowBuf", dissectors.format_qqbuf
       );
   end
   dissectors.addex( t, buf, off, size - ( off - oo ) );

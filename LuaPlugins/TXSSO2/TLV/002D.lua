@@ -1,22 +1,22 @@
 ﻿--[=======[
 -------- -------- -------- --------
-  Tencent SSO 2  >>>> TLV >>>> 0114
+  Tencent SSO 2  >>>> TLV >>>> 002D
 -------- -------- -------- --------
 
-SSO2::TLV_DHParams_0x114
+TLV_LocalIP
 ]=======]
 
 local dissectors = require "TXSSO2/Dissectors";
 
 dissectors.tlv = dissectors.tlv or {};
 
-dissectors.tlv[0x0114] = function( buf, pkg, root, t, off, size )
+dissectors.tlv[0x002D] = function( buf, pkg, root, t, off, size )
   local oo = off;
   local ver = buf( off, 2 ):uint();
-  if ver == 0x0102 then
+  off = dissectors.add( t, buf, off, ">wTlvVer W" );
+  if ver == 0x0001 then
     off = dissectors.add( t, buf, off,
-      ">wTlvVer W",
-      ">bufDHPublicKey",  dissectors.format_qqbuf
+      ">dwLocalIP D"
       );
   end
   dissectors.addex( t, buf, off, size - ( off - oo ) );

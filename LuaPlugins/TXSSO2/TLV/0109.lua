@@ -19,9 +19,9 @@ dissectors.tlv[0x0109] = function( buf, pkg, root, t, off, size )
     TXSSO2_Add2KeyChain( string.format( "f%d_SessionKey", pkg.number ), key );
     off = dissectors.add( t, buf, off,
       ">bufSessionKey", 0x10,
-      ">bufSession", FormatEx.wxline_bytes,
-      ">bufPwdForConn", FormatEx.wxline_bytes,
-      ">bufBill", FormatEx.wxline_bytes
+      ">bufSession", dissectors.format_qqbuf,
+      ">bufPwdForConn", dissectors.format_qqbuf,
+      ">bufBill", dissectors.format_qqbuf
       );
   end
   dissectors.addex( t, buf, off, size - ( off - oo ) );

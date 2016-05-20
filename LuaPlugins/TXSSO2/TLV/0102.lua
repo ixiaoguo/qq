@@ -24,10 +24,14 @@ dissectors.tlv[0x0102] = function( buf, pkg, root, t, off, size )
     off = dissectors.add( t, buf, off, ">bufOfficialKey", 0x10 );
 
     local bufSigPic = FormatEx.wxline_string( buf, off );
-    off = dissectors.add( t, buf, off, ">bufSigPic", FormatEx.wxline_bytes );
+    off = dissectors.add( t, buf, off,
+      ">bufSigPic", dissectors.format_qqbuf
+      );
 
     local bufOfficial_crc32, size = FormatEx.wxline_string( buf, off );
-    local tt = t:add( proto, buf( off, size ), "bufOfficial & crc32" );
+    local tt = t:add( proto, buf( off, size ),
+      string.format( "bufOfficial & crc32  (%04X)", #bufOfficial_crc32 )
+      );
     dissectors.add( tt, buf, off + 2,
       ">bufOfficial", 0x10,
       ">crc32 D"

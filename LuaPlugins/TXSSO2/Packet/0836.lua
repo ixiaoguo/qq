@@ -59,7 +59,7 @@ dissectors[0x3649][0x0836].send = function( buf, pkg, root, t )
   
   if lvl >= alvlC then
     dissectors.add( t, buf, off,
-      ">bufDHPublicKey", FormatEx.wxline_bytes,
+      ">bufDHPublicKey", dissectors.format_qqbuf,
       ">*dwCsCmdCryptKeySize D",
       ">bufCsPrefix", 0x10
       );

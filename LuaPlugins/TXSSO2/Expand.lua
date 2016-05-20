@@ -19,6 +19,15 @@ local fieldsex, fields = unpack( fields );
 local tagname = require "TXSSO2/TagName";
 local aly_lvl = require "TXSSO2/AnalysisLevel";
 
+function dissectors.format_qqbuf( buf, off )
+  local data, size = FormatEx.wxline_string( buf, off );
+  local ss = string.format( "(%04X)%s", #data, data:sub( 1, 0x18 ):hex2str() );
+  if #data > 0x18 then
+    ss = ss .. "...";
+  end
+  return ss, size;
+end
+
 function dissectors.add( ... )
   return TreeAddEx( fieldsex, ... );
 end

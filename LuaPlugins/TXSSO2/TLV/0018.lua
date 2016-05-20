@@ -26,7 +26,7 @@ dissectors.tlv[0x0018] = function( buf, pkg, root, t, off, size )
     for k = 1, wRedirectCount do
       off = dissectors.add( t, buf, off, ">dwRedirectIP D" );
     end
-    off = dissectors.add( t, buf, off, ">*NullBuf wxline_bytes" );
+    off = dissectors.add( t, buf, off, ">NullBuf string", dissectors.format_qqbuf );
   end
   dissectors.addex( t, buf, off, size - ( off - oo ) );
 end

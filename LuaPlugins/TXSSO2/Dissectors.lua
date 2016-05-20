@@ -8,4 +8,10 @@
 返回表
 ]=======]
 
-return {};
+local dissectors = {};
+
+dissectors[0x3649] = {};
+dissectors[0x3613] = dissectors[0x3649];
+dissectors[0x3625] = dissectors[0x3649];
+
+return dissectors;

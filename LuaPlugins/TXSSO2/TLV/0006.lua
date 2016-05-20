@@ -50,7 +50,7 @@ dissectors.tlv[0x0006] = function( buf, pkg, root, t, off, size )
       ">dwClientWanIP D",
       ">dwISP D",
       ">dwIDC D",
-      ">bufComputerID", FormatEx.wxline_bytes
+      ">bufComputerID", dissectors.format_qqbuf
       );
     local key = buf:raw( off, 0x10 );
     TXSSO2_Add2KeyChain( string.format( "f%d_TGTGTKey", pkg.number ), key );
