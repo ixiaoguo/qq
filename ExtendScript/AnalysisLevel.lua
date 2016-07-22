@@ -10,7 +10,8 @@
 
     --解析等级有"simple"|"more"|"complex"|"detail"，解析细度逐层提升，解析效率逐层下降
     --解析等级允许简写："s|m|c|d|S|M|C|D"
-
+    
+●
   table       analysis_level_tables =    
     {
     simple  = 1,        s = 1,

@@ -42,6 +42,7 @@ local dissectors = require "TXSSO2/Dissectors";
 
 local OldDissector = DissectorTable.get("udp.port"):get_dissector( proto_port );
 function proto.dissector( buf, pkg, root )
+  --合法判定，如果不是TXSSO包，则调用可能存在的旧处理函数
   if not proto_chk( buf ) then
     if not OldDissector then
       return;
@@ -54,6 +55,7 @@ function proto.dissector( buf, pkg, root )
   local cmd = buf( 1 + 1 + 1, 2 ):uint();
   local cmds = CsCmdNo[ cmd ] or "???";
   local ss = string.format( "-%04X-%s-", cmd, cmds );
+  --依据目标端口判定输入输出
   if pkg.dst_port == proto_port then
     ss = "●" .. ss;
   else
@@ -68,6 +70,7 @@ function proto.dissector( buf, pkg, root )
     return;
   end
 
+  --前缀输出
   if lvl == alvlD then
     dissectors.add( t, buf, 0,
       ">cPreFix B"
@@ -76,9 +79,11 @@ function proto.dissector( buf, pkg, root )
 
   local ver = buf( 1, 2 ):uint();
 
-  local func = dissectors[ ver ];         --对应SSO版本
+  --对应SSO版本，或选择默认的解析函数组
+  local func = dissectors[ ver ] or dissectors.other;
   if func then
-    func = func[ cmd ];                   --对应CsCmdNo
+    --对应CsCmdNo，或选择默认的解析函数组
+    func = func[ cmd ] or func.other;
     if func then
       if pkg.src_port == proto_port then
         func = func.recv;
@@ -86,21 +91,24 @@ function proto.dissector( buf, pkg, root )
         func = func.send
       end
     else
-      root:add( "TXSSO2 Dissectors无对应CsCmdNo" );
+      root:add( string.format( "TXSSO2 Dissectors无对应CsCmdNo[%04X]，请添加之", cmd ) );
     end
   else
-    root:add( "TXSSO2 Dissectors无对应SSO版本" );
-  end
-  if func then
-    local b, err = pcall( func, buf, pkg, root, t );
-    if not b then
-      root:add( "解析proto失败 : " .. err );
-      dissectors.add( t, buf, 1, ">unsolved", buf:len() - 2 );
-    end
-  else
-    dissectors.add( t, buf, 1, ">unsolved", buf:len() - 2 );
+    root:add( string.format( "TXSSO2 Dissectors无对应SSO版本[%04X]，请添加之", ver ) );
   end
 
+  local data = buf( 1, buf:len() - 2 ):tvb();
+  if func then
+    local b, err = pcall( func, data, pkg, root, t );
+    if not b then
+      root:add( "解析TXSSO2失败 : " .. err );
+      dissectors.add( t, data, 0, ">unsolved" );
+    end
+  else
+    dissectors.add( t, data, 0, ">unsolved" );
+  end
+
+  --后缀输出
   if lvl == alvlD then
     dissectors.add( t, buf, buf:len() - 1,
       ">cSufFix B"

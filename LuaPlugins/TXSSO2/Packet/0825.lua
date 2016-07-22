@@ -6,36 +6,36 @@
 Ping
 ]=======]
 
+local cmdno = 0x0825;
+
 local dissectors = require "TXSSO2/Dissectors";
-
-dissectors[0x3649] = dissectors[0x3649] or {};
-
-dissectors[0x3649][0x0825] = dissectors[0x3649][0x0825] or {};
 
 local proto = require "TXSSO2/Proto";
 
 local aly_lvl = require "TXSSO2/AnalysisLevel";
 
-dissectors[0x3649][0x0825].send = function( buf, pkg, root, t )
-  local ver = buf( 1, 2 ):uint();
-  local cmd = buf( 1 + 1 + 1, 2 ):uint();
-  local seq = buf( 1 + 1 + 1 + 2, 2 ):uint();
+local function PCQQSend( buf, pkg, root, t )
+  local ver = buf( 0, 2 ):uint();
+  local cmd = buf( 1 + 1, 2 ):uint();
+  local seq = buf( 1 + 1 + 2, 2 ):uint();
 
-  local key = buf:raw( 0x1A, 0x10 );
+  local key = buf:raw( 0x19, 0x10 );
   TXSSO2_Add2KeyChain( TXSSO2_MakeKeyName( cmd, seq, pkg.number ), key );
 
   local lvl = aly_lvl();
 
   if lvl >= alvlC then
-    local tt = t:add( proto, buf( 1, 0xA ), "bufPacketHeader");
-    dissectors.add( tt, buf, 1,
+    --输出包头
+    local tt = t:add( proto, buf( 0, 0xA ), "bufPacketHeader");
+    dissectors.add( tt, buf, 0,
       ">cMainVer B",
       ">cSubVer B",
       ">wCsCmdNo W",
       ">wCsIOSeq W",
       ">dwUin D"
       );
-    dissectors.add( t, buf, 0xB,
+    --输出中段信息
+    dissectors.add( t, buf, 0xA,
       ">xxoo_a", 3,
       ">dwClientType D",
       ">dwPubNo D",
@@ -44,92 +44,110 @@ dissectors[0x3649][0x0825].send = function( buf, pkg, root, t )
       );
   end
 
-  local rest = buf:len() - 1 - 0x2A;
-  local data = buf:raw( 0x2A, rest );
+  --剩余的数据，尝试解密
+  local rest = buf:len() - 0x29;
+  local data = buf:raw( 0x29 );
   
-  local refkeyname,refkey, ds = dissectors.TeanDecrypt( data );
+  local refkeyname, refkey, ds = dissectors.TeanDecrypt( data );
   if ds == nil or #ds == 0 then
-    t:add( proto, buf( 0x2A, rest ), string.format(
+    t:add( proto, buf( 0x29 ), string.format(
       "GeneralCodec_Request [%04X] 解密失败！！！！",
       rest )
       );
     return;
   end
-  data = ByteArray.new( ds, true ):tvb( "Decode" );
-
   local info = string.format(
     "GeneralCodec_Request [%04X] >> [%04X]       With Key",
     rest,
-    data:len()
+    #ds
     );
   local c, s, n = TXSSO2_AnalysisKeyName( refkeyname );
   if c then
     if n == tostring( pkg.number ) then
       info = info .. "    by frame self ↑↑↑";
+      n = nil;
     else
       info = info .. ":" .. refkey:sub( 1, 0x10 ):hex2str( true ) .. "       form FrameNum:" .. n;
     end
   else
     info = info .. "[" .. refkeyname .. "]:" .. refkey:sub( 1, 0x10 ):hex2str( true );
+    n = refkeyname:match( "^f(%d+)_" );
   end
-  local tt = t:add( proto, buf( 0x2A, rest ), info );
+  local tt = t:add( proto, buf( 0x29 ), info );
+  if n then
+    dissectors.keyframe( tt, tonumber( n ) );
+  end
 
+  data = ByteArray.new( ds, true ):tvb( "Decode" );
   dissectors.dis_tlv( data, pkg, root, tt, 0, data:len() );
 end
 
-dissectors[0x3649][0x0825].recv = function( buf, pkg, root, t )
-  local ver = buf( 1, 2 ):uint();
-  local cmd = buf( 1 + 1 + 1, 2 ):uint();
-  local seq = buf( 1 + 1 + 1 + 2, 2 ):uint();
+local function PCQQRecv( buf, pkg, root, t )
+  local ver = buf( 0, 2 ):uint();
+  local cmd = buf( 1 + 1, 2 ):uint();
+  local seq = buf( 1 + 1 + 2, 2 ):uint();
 
   local lvl = aly_lvl();
 
   if lvl >= alvlC then
-    local tt = t:add( proto, buf( 1, 0xA ), "bufPacketHeader");
-    dissectors.add( tt, buf, 1,
+    --包头
+    local tt = t:add( proto, buf( 0, 0xA ), "bufPacketHeader");
+    dissectors.add( tt, buf, 0,
       ">cMainVer B",
       ">cSubVer B",
       ">wCsCmdNo W",
       ">wCsIOSeq W",
       ">dwUin D"
       );
-    dissectors.add( t, buf, 0xB,
+    --中段信息
+    dissectors.add( t, buf, 0xA,
       ">xxoo_a", 3
       );
   end
 
-  local rest = buf:len() - 1 - 0xE;
-  local data = buf:raw( 0xE, rest );
+  local rest = buf:len() - 0xD;
+  local data = buf:raw( 0xD );
   
-  local refkeyname,refkey, ds = dissectors.TeanDecrypt( data );
+  local refkeyname, refkey, ds = dissectors.TeanDecrypt( data );
   if ds == nil or #ds == 0 then
-    t:add( proto, buf( 0xE, rest ), string.format(
+    t:add( proto, buf( 0xD ), string.format(
       "GeneralCodec_Response [%04X] 解密失败！！！！",
       rest )
       );
     return;
   end
-  data = ByteArray.new( ds, true ):tvb( "Decode" );
 
   local info = string.format(
     "GeneralCodec_Response [%04X] >> [%04X]       With Key",
     rest,
-    data:len()
+    #ds
     );
   local c, s, n = TXSSO2_AnalysisKeyName( refkeyname );
   if c then
     if n == tostring( pkg.number ) then
       info = info .. "    by frame self ↑↑↑";
+      n = nil;
     else
       info = info .. ":" .. refkey:sub( 1, 0x10 ):hex2str( true ) .. "       form FrameNum:" .. n;
     end
   else
     info = info .. "[" .. refkeyname .. "]:" .. refkey:sub( 1, 0x10 ):hex2str( true );
+    n = refkeyname:match( "^f(%d+)_" );
   end
-  local tt = t:add( proto, buf( 0xE, rest ), info );
+  local tt = t:add( proto, buf( 0xD ), info );
+  if n then
+    dissectors.keyframe( tt, tonumber( n ) );
+  end
+  
+  local data = ByteArray.new( ds, true ):tvb( "Decode" );
   
   local off = 0;
-  off = dissectors.add( tt, data, off, ">cResult" );
+  off = dissectors.add( tt, data, off, ">cResult B" );
 
   dissectors.dis_tlv( data, pkg, root, tt, off, data:len() - off );
 end
+
+dissectors.other = dissectors.other or {};
+dissectors.other[cmdno] = dissectors.other[cmdno] or {};
+dissectors.other[cmdno].send = dissectors.other[cmdno].send or PCQQSend;
+dissectors.other[cmdno].recv = dissectors.other[cmdno].recv or PCQQRecv;

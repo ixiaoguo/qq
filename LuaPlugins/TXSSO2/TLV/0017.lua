@@ -17,7 +17,7 @@ dissectors.tlv[0x0017] = function( buf, pkg, root, t, off, size )
   if ver == 0x0001 then
     off = dissectors.add( t, buf, off,
       ">wTlvVer W",
-      ">dwServerTime D",
+      ">dwServerTime D", dissectors.format_time,
       ">dwClientWanIP D",
       ">wClientWanPort W",
       ">UnknowBuf", dissectors.format_qqbuf

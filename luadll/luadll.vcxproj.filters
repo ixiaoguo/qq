@@ -43,16 +43,10 @@
     <ClCompile Include="..\..\xlualib\lopenssl.cpp">
       <Filter>xlua</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\xlualib\ls_ws.cpp">
-      <Filter>xlua</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\xlualib\lserialcomm.cpp">
       <Filter>xlua</Filter>
     </ClCompile>
     <ClCompile Include="..\..\xlualib\lsock.cpp">
-      <Filter>xlua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\xlualib\lutf8.cpp">
       <Filter>xlua</Filter>
     </ClCompile>
     <ClCompile Include="..\..\xlualib\ldes.cpp">
@@ -163,6 +157,9 @@
     <ClCompile Include="..\..\xlualib\lblowfish.cpp">
       <Filter>xlua</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\xlualib\lpe.cpp">
+      <Filter>xlua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\xlualib\lalgorithm.h">
@@ -177,16 +174,10 @@
     <ClInclude Include="..\..\xlualib\lopenssl.h">
       <Filter>xlua</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\xlualib\ls_ws.h">
-      <Filter>xlua</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\xlualib\lserialcomm.h">
       <Filter>xlua</Filter>
     </ClInclude>
     <ClInclude Include="..\..\xlualib\lsock.h">
-      <Filter>xlua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\xlualib\lutf8.h">
       <Filter>xlua</Filter>
     </ClInclude>
     <ClInclude Include="..\..\xlualib\lwinapi.h">
@@ -291,6 +282,9 @@
     <ClInclude Include="..\..\xlualib\lblowfish.h">
       <Filter>xlua</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\xlualib\lpe.h">
+      <Filter>xlua</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="luadll.rc">
@@ -299,5 +293,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\xlua.lua" />
+    <None Include="..\ExtendScript\AnalysisLevel.lua">
+      <Filter>extend</Filter>
+    </None>
+    <None Include="..\ExtendScript\FormatEx.lua">
+      <Filter>extend</Filter>
+    </None>
+    <None Include="..\ExtendScript\ProtoFieldEx.lua">
+      <Filter>extend</Filter>
+    </None>
+    <None Include="..\ExtendScript\TreeAddEx.lua">
+      <Filter>extend</Filter>
+    </None>
   </ItemGroup>
 </Project>

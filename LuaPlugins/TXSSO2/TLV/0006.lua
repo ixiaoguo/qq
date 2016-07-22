@@ -45,7 +45,7 @@ dissectors.tlv[0x0006] = function( buf, pkg, root, t, off, size )
       ">*const_0 W",
       ">bRememberPwdLogin B",
       ">bufPsMD5", 0x10,
-      ">dwServerTime D",
+      ">dwServerTime D", dissectors.format_time,
       ">*const_0 bytes", 0xD,
       ">dwClientWanIP D",
       ">dwISP D",

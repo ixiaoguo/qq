@@ -18,10 +18,9 @@
     <ClCompile Include="..\..\xlualib\lhex_str.cpp" />
     <ClCompile Include="..\..\xlualib\lmkmem.cpp" />
     <ClCompile Include="..\..\xlualib\lopenssl.cpp" />
+    <ClCompile Include="..\..\xlualib\lpe.cpp" />
     <ClCompile Include="..\..\xlualib\lserialcomm.cpp" />
     <ClCompile Include="..\..\xlualib\lsock.cpp" />
-    <ClCompile Include="..\..\xlualib\ls_ws.cpp" />
-    <ClCompile Include="..\..\xlualib\lutf8.cpp" />
     <ClCompile Include="..\..\xlualib\lwinapi.cpp" />
     <ClCompile Include="..\..\xlualib\lxhttp.cpp" />
     <ClCompile Include="..\..\xlualib\lxlog.cpp" />
@@ -69,10 +68,9 @@
     <ClInclude Include="..\..\xlualib\lhex_str.h" />
     <ClInclude Include="..\..\xlualib\lmkmem.h" />
     <ClInclude Include="..\..\xlualib\lopenssl.h" />
+    <ClInclude Include="..\..\xlualib\lpe.h" />
     <ClInclude Include="..\..\xlualib\lserialcomm.h" />
     <ClInclude Include="..\..\xlualib\lsock.h" />
-    <ClInclude Include="..\..\xlualib\ls_ws.h" />
-    <ClInclude Include="..\..\xlualib\lutf8.h" />
     <ClInclude Include="..\..\xlualib\lwinapi.h" />
     <ClInclude Include="..\..\xlualib\lxhttp.h" />
     <ClInclude Include="..\..\xlualib\lxlog.h" />
@@ -109,6 +107,10 @@
     <ResourceCompile Include="luadll.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\ExtendScript\AnalysisLevel.lua" />
+    <None Include="..\ExtendScript\FormatEx.lua" />
+    <None Include="..\ExtendScript\ProtoFieldEx.lua" />
+    <None Include="..\ExtendScript\TreeAddEx.lua" />
     <None Include="..\xlua.lua" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

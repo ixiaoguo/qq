@@ -21,12 +21,13 @@
   bool;               --true|false
   ipv4;               --0.0.0.0
   ipv4_port;          --0.0.0.0:0
-  float;              --0.0
-  string;             --00000
-  bytes;              --000000
+  float;              --0.0             //无视大小端
+  string;             --00000           //size <= 0时，取剩余所有数据
+  bytes;              --000000          //size <= 0时，取剩余所有数据
 
-  stringz;
+  stringz;                              //不接受指定size，遇\0截断(包含\0)，否则取剩余所有数据
 
+  //xline表示head不包含自身大小
   bxline_string;      bline_string;
   wxline_string;      wline_string;
   dxline_string;      dline_string;

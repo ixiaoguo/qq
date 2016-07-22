@@ -10,8 +10,11 @@
 
 local dissectors = {};
 
-dissectors[0x3649] = {};
-dissectors[0x3613] = dissectors[0x3649];
-dissectors[0x3625] = dissectors[0x3649];
+dissectors.other = {};
+
+--如果只是版本不同，解析方法相同，只需要简单的=就好啦
+dissectors[0x3649] = dissectors.other;
+dissectors[0x3613] = dissectors.other;
+dissectors[0x3625] = dissectors.other;
 
 return dissectors;

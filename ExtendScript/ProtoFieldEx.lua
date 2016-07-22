@@ -8,12 +8,21 @@
 ●
     table protofieldsex, table protofields
               ProtoFieldEx              (
-                                        [ string proto_pre_fix ]
+                                        [ string proto_pre_fix, ]
                                         table fields
                                         );                                [-1|2, +2, v]
         --建立自动对齐格式化的Field表
         --返回第一个表用于与TreeAddEx配合使用，简化元素添加
+          {
+          ["__fmt"] = fmt;
+          [short_addr] = { type = func, field },
+          ...
+          }
         --返回第二个表用于proto.fields的赋值
+          {
+          [short_addr] = field,
+          ...
+          }
         --参数proto_pre_fix用于添加abbr前缀（强烈建议添加之）
         --fields的规则如下：
           {
@@ -26,7 +35,7 @@
         --对于表中每个元素，函数将为之生成
             ProtoField[ func ]( proto_pre_fix .. short_abbr, fix_name, ... );
           当func未能识别时，默认使用uint32
-          func无视大写，一律转换成小写格式
+        --func无视大写，一律转换成小写格式
         --函数自动在表前添加如下默认元素
           {
             { "uint8",      "xxoo_b",     "Byte",    base.HEX_DEC },
@@ -36,7 +45,7 @@
             { 'bytes',      "xxoo_a",     "Array"                 },
             { "string",     "xxoo_s",     "String"                },
           };
-          ====允许覆盖之===
+        --表元素====允许覆盖之===
         --!!!!函数处理fix_name时，以UTF8格式处理字符串，要求short_abbr与name必须为UTF8!!!!
         --fields的func允许简写：          
           {
@@ -48,6 +57,7 @@
           s   = "string",
           }
 ]=======]
+--此表用于处理简写
 local ProtoFieldShort =
   {
   b   = "uint8",
@@ -57,7 +67,7 @@ local ProtoFieldShort =
   a   = "bytes",
   s   = "string",
   };
-function ProtoFieldEx( arg1, arg2  )
+function ProtoFieldEx( arg1, arg2 )
   --这个表转移进来是为了在非wireshark环境下初始化时不出错
   local ProtoFieldDefault =
     {
@@ -82,11 +92,7 @@ function ProtoFieldEx( arg1, arg2  )
   --复制，避免后面对原始fields表的修改
   local fs = {};
   for k, t in pairs( fields ) do
-    local kk = {};
-    for i, v in pairs( t ) do
-      kk[ i ] = v;
-    end
-    fs[ k ] = kk;
+    fs[ k ] = { unpack( t ) };
   end
   fields = fs;
 
@@ -127,17 +133,17 @@ function ProtoFieldEx( arg1, arg2  )
   --开始提取field type, abbr, name。同时修改name以使对齐显示。进而建立field
   for _, k in pairs( fs ) do
     local arg = fields[ k ];
-    local func = table.remove( arg, 1 ) or "uint32";
+    local func = arg[ 1 ] or "uint32";
     func = func:lower();
     func = ProtoFieldShort[ func ] or func; --简写转换
 
-    local abbr = table.remove( arg, 1 );
-    local name = table.remove( arg, 1 ) or abbr;
+    local abbr = arg[ 2 ];
+    local name = arg[ 3 ] or abbr;
     name = s2utf8( string.format( fmt, abbr, name ) );    --解决对齐问题
     
     local types = func;
     local func = ProtoField[func] or ProtoField.uint32;
-    local field = func( pre_fix .. abbr, name, table.unpack( arg ) );
+    local field = func( pre_fix .. abbr, name, select( 4, table.unpack( arg ) ) );
 
     protofields[ abbr ] = field;
     protofieldsex[ abbr ] = { types = types,  field = field };

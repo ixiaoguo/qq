@@ -28,6 +28,25 @@ function dissectors.format_qqbuf( buf, off )
   return ss, size;
 end
 
+function dissectors.format_qqstring( buf, off )
+  local data, size = FormatEx.wxline_string( buf, off );
+  local ss = string.format( "(%04X)%s", #data, data:sub( 1, 0x18 ) );
+  if #data > 0x18 then
+    ss = ss .. "...";
+  end
+  return ss, size;
+end
+
+function dissectors.format_time( buf, off )
+  local t = buf( off, 4 ):uint();
+  local ss = os.date('%Y/%m/%d %H:%M:%S', t) .. string.format( '(0x%08X)', t );
+  return ss, 4;
+end
+
+function dissectors.keyframe( root, n )
+  root:add( fieldsex.keyframe.field, n );
+end
+
 function dissectors.add( ... )
   return TreeAddEx( fieldsex, ... );
 end
@@ -73,10 +92,10 @@ function dissectors.dis_tlv( buf, pkg, root, t, off, size )
             TreeAddEx( fieldsex, tt, buf( off + 2 + 2, len ), ">unsolved", len );
           end
         else
-          root:add( "TXSSO Dissectors无对应TLV" .. string.format( "%04X", tag ) );
+          root:add( proto, "TXSSO Dissectors无对应TLV" .. string.format( "%04X", tag ) );
         end
       else
-        root:add( "TXSSO Dissectors无TLV" );
+        root:add( proto, "TXSSO Dissectors无TLV" );
       end
     end
     off = off + 2 + 2 + len;

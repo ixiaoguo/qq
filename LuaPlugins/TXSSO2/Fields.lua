@@ -16,6 +16,8 @@ local fields =
     
     { "string",       "NullBuf",                                               },
     { "string",       "UnknowBuf",                                             },
+
+    { "framenum",     "keyframe",               "Key源Frame号",       base.NONE },
     
     { "uint8",        "cPreFix",                "协议前缀",           base.HEX },
     { "uint8",        "cSufFix",                "协议后缀",           base.HEX },
@@ -39,7 +41,7 @@ local fields =
     { "string",       "bufDHPublicKey",         "ECDHPublicKey"                },
     { "uint8",        "cResult",                "响应码",             base.HEX, RetCode },
     { "bytes",        "bufSigClientAddr",                                      },
-    { "absolute_time","dwServerTime",           "服务器时间",         base.LOCAL },
+    { "string",       "dwServerTime",           "服务器时间"                   },
     { "ipv4",         "dwClientWanIP",          "客户端外网地址"               },
     { "uint16",       "wClientWanPort",         "客户端外网端口",     base.DEC_HEX },
     { "uint32",       "dwIDC",                  "IDC",                base.HEX },
@@ -85,6 +87,27 @@ local fields =
     { "ipv4",         "dwLocalIP",              "客户端内网地址"               },
     { "bytes",        "bufQQMd5",               "QQ客户端MD5"                  },
     { "uint8",        "QdFlag",                 "QdFlag",             base.HEX },
+    { "uint16",       "wErrorCode",             "错误代码",           base.HEX },
+    { "string",       "ErrorMsg",               "错误信息"                     },
+
+    { "bytes",        "bufControl",             "Control"                      },
+
+    { "string",       "bufAccount",             "替代帐号"                     },
+
+    { "uint32",       "dwLocaleID",             "本地标识",           base.HEX },
+    { "uint16",       "wTimeZoneoffsetMin",     "时区标识",           base.HEX },
+
+    { "bytes",        "buf16byteSessionKey",    "16byteSessionKey"             },
+    { "ipv4",         "dwClientIP",             "客户端地址"                   },
+    { "uint16",       "wClientPort",            "客户端端口",         base.DEC_HEX },
+    { "uint8",        "cPassSeqID",             "PassSeqID",          base.HEX },
+    { "ipv4",         "dwConnIP",               "ConnIP地址"                   },
+    { "ipv4",         "dwReLoginConnIP",        "ReLoginConnIP"                },
+    { "uint32",       "dwReLoginCtrlFlag",      "ReLoginCtrlFlag",    base.HEX },
+    { "string",       "bufComputerIDSig",       "设备ID标识"                   },
+    
+    { "string",       "bufSigLastLoginInfo",    "SigLastLoginInfo"             },
+
 
   };
 

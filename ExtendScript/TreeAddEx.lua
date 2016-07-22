@@ -18,6 +18,7 @@
         --不定参以 short_abbr[, size|format_function], short_abbr, ... 形式提供
           当不提供size或format_function时，使用默认长度
           当指定field未有默认长度时，使用剩余的所有数据
+          当指定size <= 0时，跳过不处理
           默认长度列表如下：          
             {
             uint8     = 1,
@@ -56,7 +57,7 @@
             format_function( buf, off, nil, tree_add_func, root, field );
             如果调用内部使用了tree_add_func，应返回off + size
             否则应返回formatted_string, size。
-            处理将在其后自动调用tree_add_func( root, field, buf( off, size), prefix_string .. formatted_string );
+            处理将在其后自动调用tree_add_func( root, buf( off, size), prefix_string .. formatted_string );
           --否则必须在空格后指定类型，支持类型参考FormatEx
 
         ex:
@@ -165,7 +166,7 @@ local function TreeAddEx_AddOne( arg, k, root, tvb, off, protofieldsex )
   if types == "function" then
     local ss, size = kk( tvb, off, nil, func, root, field );
     --如果格式化函数内部处理完毕，则不再继续
-    if not size then
+    if not size or size <= 0 then
       return ss, k + 1;
     end
     --否则进行默认添加
@@ -179,6 +180,9 @@ local function TreeAddEx_AddOne( arg, k, root, tvb, off, protofieldsex )
 
   if tb then
     if types == "number" then
+      if kk <= 0 then
+        return off, k + 1;
+      end
       func( root, tb.field, tvb( off, kk ) );
       return off + kk, k + 1;
     end
@@ -203,14 +207,14 @@ local function TreeAddEx_AddOne( arg, k, root, tvb, off, protofieldsex )
     end
     
     local ss, size = fmttype( tvb, off, nil, func, root, field );
-    if not size then
+    if not size or size <= 0 then
       return ss, k;
     end
     func( root, field, tvb( off, size), ss );
     return off + size, k;
   end
 
-    --abbr不可识别时，除非另外指定格式化函数，否则必须指定类型，且类型可格式化
+  --abbr不可识别时，除非另外指定格式化函数，否则必须指定类型，且类型可格式化
   local tps = fmttype;
   if not fmttype or fmttype == "" then
     return error( "abbr:" .. abbr .. " no fixed and no type" );
@@ -224,7 +228,7 @@ local function TreeAddEx_AddOne( arg, k, root, tvb, off, protofieldsex )
   if types == "number" then
     local size = kk;
     local ss, size = fmttype( tvb, off, size, func, root, field );
-    if not size then
+    if not size or size <= 0 then
       return ss, k + 1;
     end
     func( root, tvb( off, size ), field .. ss );
@@ -232,7 +236,7 @@ local function TreeAddEx_AddOne( arg, k, root, tvb, off, protofieldsex )
   end
   
   local ss, size = fmttype( tvb, off, nil, func, root, field );
-  if not size then
+  if not size or size <= 0 then
     return ss, k;
   end
   func( root, tvb( off, size ), field .. ss );
@@ -246,6 +250,9 @@ function TreeAddEx( protofieldsex, root, tvb, off, ... )
   local k = 1;
   while k <= #arg do
     off, k = TreeAddEx_AddOne( arg, k, root, tvb, off, protofieldsex );
+    if off >= tvb:len() then
+      break;
+    end
   end
   return off;
 end

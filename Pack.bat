@@ -25,7 +25,7 @@ echo Lua路径 %LuaExe%
 echo 合并xlua文件...
 
 rem 初始化合并脚本、合并注释
-set xlua_ver=3.3
+set xlua_ver=4.1
 echo xlua_ver = %xlua_ver%>%DestLua%
 echo xlua版本 %xlua_ver%>%DestCmt%
 
@@ -33,7 +33,7 @@ rem 合并脚本；提取注释
 for /r %%f in (..\xlualib\Lua\*.lua) do echo     %%f& "%LuaExe%" -e "local file = io.open( [[%%f]], 'r'); local data = file:read('*a'); file:close(); local notes = ''; for note in data:gmatch('%%-%%-%%[=======%%[(.-)%%]=======%%]') do notes = notes .. '\r\n' .. note .. '\r\n'; end   file = io.open( '%DestLua%', 'a+'); file:write( '\r\ndo\r\n' .. data .. '\r\nend\r\n' ); file:close(); file = io.open( '%DestCmt%', 'a+'); file:write( notes ); file:close();"&if not %errorlevel%==0 echo !!!!!!!!合并失败!!!!!!!!&&goto mkerror
 
 echo 合并wireshark ex...
-set wireshark_ex_ver=3.0
+set wireshark_ex_ver=3.1
 echo -->>%DestLua%
 echo wireshark_ex_ver = %wireshark_ex_ver%>>%DestLua%
 echo -->>%DestCmt%
